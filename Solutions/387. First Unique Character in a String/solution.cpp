@@ -28,7 +28,6 @@ class Solution {
     // Declarations
     int i, len;
     int occurrences[26];
-    char letter;
 
     // Instantiate new array containing zeroes only
     occurrences[26] = {0};
@@ -38,8 +37,7 @@ class Solution {
 
     // Iterate over string's chars, keeping track of instances of each
     for (i = 0; i < len; i++) {
-      letter = s[i];
-      occurrences[letter - 'a'] = occurrences[letter - 'a'] + 1;
+      occurrences[s[i] - 'a']++;
     }
 
     // Check to see which unique character comes first in the string
