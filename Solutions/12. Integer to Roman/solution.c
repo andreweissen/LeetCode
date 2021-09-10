@@ -145,7 +145,7 @@ char * intToRoman(int num) {
  * @param argv char** The command line args in string form
  * @return int A status <code>int</code>
  */
-int main(int argc, char * argv) {
+int main(int argc, char ** argv) {
   
   // Declarations
   int i, len, testCases[] = {5, 3, 4, 9, 58, 1994};
