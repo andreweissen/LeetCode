@@ -44,17 +44,29 @@ char * intToRoman(int num) {
 
   // Calculate return string size
   for (i = 0; i < 4; i++) {
+
+    // Input only goes to 4999, so only need to add number of 'M's present
     if (spl[i] == 0) {
       l += spl[i];
     } else {
+
+      // 1s and 5s only get one numeral; examples: I, V, L, C
       if (spl[i] == 1 || spl[i] == 5) {
         l += 1;
+
+      // 2s, 4s, 6s, and 9s get two numerals; examples: IV, VI, LX, CC, II
       } else if (spl[i] == 2 || spl[i] == 4 || spl[i] == 6 || spl[i] == 9) {
         l += 2;
+
+      // 3s and 7s get three numerals; examples: III, VII, LXX, CCC, DCC
       } else if (spl[i] == 3 || spl[i] == 7) {
         l += 3;
+
+      // 8s get four numerals; examples: VIII, LXXX, DCCC
       } else if (spl[i] == 8) {
         l += 4;
+
+      // Unreachable edge case because why not (input guaranteed wellformed)
       } else {
         l += 0;
       }
