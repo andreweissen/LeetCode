@@ -82,20 +82,16 @@ int romanToInt2(char * s) {
 
     while (*p_s) {
       current = calcValue(*p_s);
-
        
       // If the previous numeral is of a lesser value...
       if (p_s != s && (former = calcValue(*(p_s - 1))) < current) {
 
-
         // ...subtract from accumulated total...
         sum -= former;
-        
 
         // ...and subtract from present numeral's value
         current -= former;
       }
-
 
       // Add this value to the accumulator
       sum += current;
