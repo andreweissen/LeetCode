@@ -90,44 +90,43 @@ char * intToRoman(int num) {
 
   // Iterate over 1000s, 100s, 10s, and 1s respectively
   for (i = 0, k = 0; i < 4; i++) {
+    if (spl[i] == 0) {
+      continue;
+    }
 
     // Input only goes to 4999, so only add as many 'M's as there are thousands
     if (i == 0) {
-      if (spl[i] != 0) {
-        for (j = 0; j < spl[i]; j++) {
-          s[c++] = rn[i];
-        }
+      for (j = 0; j < spl[i]; j++) {
+        s[c++] = rn[i];
       }
-    } else {
+      continue;
+    }
 
-      // Helper variable to keep track of which numeral to use
-      k = i * 2 - 1;
-      if (spl[i] != 0) {
+    // Helper variable to keep track of which numeral to use
+    k = i * 2 - 1;
 
-        // Examples: 3=III, 20=XX,
-        if (spl[i] > 0 && spl[i] < 4) {
-          for (j = 0; j < spl[i]; j++) {
-            s[c++] = rn[k];
-          }
-
-        // Examples: 4=IV, 40=XL
-        } else if (spl[i] == 4) {
-          s[c++] = rn[k];
-          s[c++] = rn[k + 1];
-
-        // Examples: 7=VII, 800=DCCC
-        } else if (spl[i] > 4 && spl[i] < 9) {
-          s[c++] = rn[k + 1];
-          for (j = 0; j < (spl[i] - 5); j++) {
-            s[c++] = rn[k];
-          }
-
-        // Examples: 9=IX, 90=XC
-        } else if (spl[i] == 9) {
-          s[c++] = rn[k];
-          s[c++] = rn[k - ((k == 1) ? 1 : 2)];
-        }
+    // Examples: 3=III, 20=XX,
+    if (spl[i] > 0 && spl[i] < 4) {
+      for (j = 0; j < spl[i]; j++) {
+        s[c++] = rn[k];
       }
+
+    // Examples: 4=IV, 40=XL
+    } else if (spl[i] == 4) {
+      s[c++] = rn[k];
+      s[c++] = rn[k + 1];
+
+    // Examples: 7=VII, 800=DCCC
+    } else if (spl[i] > 4 && spl[i] < 9) {
+      s[c++] = rn[k + 1];
+      for (j = 0; j < (spl[i] - 5); j++) {
+        s[c++] = rn[k];
+      }
+
+    // Examples: 9=IX, 90=XC
+    } else if (spl[i] == 9) {
+      s[c++] = rn[k];
+      s[c++] = rn[k - ((k == 1) ? 1 : 2)];
     }
   }
 
