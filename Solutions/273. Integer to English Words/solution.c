@@ -7,7 +7,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #define REQUIRES_BILLION  0x01 // 0b00000001
 #define REQUIRES_MILLION  0x02 // 0b00000010
