@@ -1,7 +1,7 @@
 /**
  * @file solution.c
  * @author Andrew Eissen <andrew@andreweissen.com>
- * @date 7 September 2021
+ * @date 7 September 2021 (revised 13 September 2021)
  * @brief A C-based solution to LeetCode question 65
  */
 
@@ -11,6 +11,10 @@
 
 #define TC_TYPES 2
 #define TC_CASES 17
+
+#define HAS_DECIMAL 0x01 // 0b00000001
+#define HAS_E       0x02 // 0b00000010
+#define HAS_DIGIT   0x04 // 0b00000100
 
 /**
  * @brief This solution, though <code>O(n)</code> and thus dependent upon the
@@ -25,7 +29,10 @@
  * <br />
  * At the time of its submission, this implementation was found to be faster
  * than 100% of all C implementations with a runtime of 0 ms and more efficient
- * in terms of memory usage than 67.69% of C implementations. 
+ * in terms of memory usage than 67.69% of C implementations. A subsequent
+ * revision using bit field flags and a single unsigned <code>char</code>
+ * improved memory usage to the point that the implementation was rendered more
+ * efficient than 95.45% of other C submissions with a memory usage of 5.4 MB.
  *
  * @param s char* The string to be parsed and evaluated
  * @return bool A boolean denoting whether input string  is a number
@@ -33,38 +40,32 @@
 bool isNumber(char * s) {
 
   // Declarations
-  int i;
-  bool hasDecimal, hasE, hasDigit;
+  unsigned char i, f;
 
-  // Definitions
-  hasDecimal = false;
-  hasE = false;
-  hasDigit = false;
-
-  for (i = 0; s[i] != '\0'; i++) {
+  for (i = 0, f = 0; s[i] != '\0'; i++) {
 
     // 0-9 digit
     if (s[i] >= '0' && s[i] <= '9') {
-      hasDigit = true;
+      f = f | HAS_DIGIT;
 
     // Exponent (e or E)
     } else if (s[i] == 'e' || s[i] == 'E') {
 
       // Only one exponent per number, only valid if preceded by number
-      if (hasE || !hasDigit) {
+      if ((f & HAS_E) || !(f & HAS_DIGIT)) {
         return false;
       }
-      hasE = true;
-      hasDigit = false;
+      f = f | HAS_E;
+      f = f ^ HAS_DIGIT;
 
     // Decimal
     } else if (s[i] == '.') {
 
       // Only one decimal per number, no decimal after exponent
-      if (hasDecimal || hasE) {
+      if ((f & HAS_DECIMAL) || (f & HAS_E)) {
         return false;
       }
-      hasDecimal = true;
+      f = f | HAS_DECIMAL;
 
     // Sign (+ or -)
     } else if (s[i] == '-' || s[i] == '+') {
@@ -81,7 +82,7 @@ bool isNumber(char * s) {
   }
 
   // Numbers cannot be non-numeric (., e, E, +, -)
-  return hasDigit;
+  return f & HAS_DIGIT;
 }
 
 /**
@@ -116,7 +117,7 @@ int main(int argc, char ** argv) {
       "-123.456e789",
       "1e1",
       "+.1",
-      "0",
+      ".1",
       "-12E4",
       "46.e3"
     },
